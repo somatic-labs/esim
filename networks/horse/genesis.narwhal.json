@@ -310,10 +310,6 @@
       "narwhal": {
         "params": {}
       },
-      "nft": {
-        "classes": [],
-        "entries": []
-      },
       "params": null,
       "runtime": null,
       "slashing": {

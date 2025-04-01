@@ -4,9 +4,7 @@ import (
 	"os"
 
 	"cosmossdk.io/log"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/uwu-shepards/horse/app"
-	"github.com/uwu-shepards/horse/app/params"
+	cmtconfig "github.com/cometbft/cometbft/config"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
@@ -18,14 +16,26 @@ import (
 	txmodule "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/spf13/cobra"
+	"github.com/uwu-shepards/horse/app"
+	"github.com/uwu-shepards/horse/app/params"
 )
+
+// initAppConfig initializes the app config
+func initAppConfig() (string, *AppConfig) {
+	return DefaultConfigTemplate(), NewDefaultConfig()
+}
+
+// initCometBFTConfig initializes the CometBFT config
+func initCometBFTConfig() *cmtconfig.Config {
+	return cmtconfig.DefaultConfig()
+}
 
 // NewRootCmd creates a new root command for wasmd. It is called once in the
 // main function.
 func NewRootCmd() *cobra.Command {
 	// we "pre"-instantiate the application for getting the injected/configured encoding configuration
 	// note, this is not necessary when using app wiring, as depinject can be directly used (see root_v2.go)
-	tempApp := app.New(log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()), []wasmkeeper.Option{})
+	tempApp := app.New(log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()))
 	encodingConfig := params.EncodingConfig{
 		InterfaceRegistry: tempApp.InterfaceRegistry(),
 		Codec:             tempApp.AppCodec(),
