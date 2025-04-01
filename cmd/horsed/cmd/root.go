@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"cosmossdk.io/log"
+	cmtconfig "github.com/cometbft/cometbft/config"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
@@ -18,6 +19,16 @@ import (
 	"github.com/uwu-shepards/horse/app"
 	"github.com/uwu-shepards/horse/app/params"
 )
+
+// initAppConfig initializes the app config
+func initAppConfig() (string, *AppConfig) {
+	return DefaultConfigTemplate(), NewDefaultConfig()
+}
+
+// initCometBFTConfig initializes the CometBFT config
+func initCometBFTConfig() *cmtconfig.Config {
+	return cmtconfig.DefaultConfig()
+}
 
 // NewRootCmd creates a new root command for wasmd. It is called once in the
 // main function.
